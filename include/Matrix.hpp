@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <random>
 using namespace std;
 
 class Matrix
@@ -13,9 +14,12 @@ class Matrix
 public:
 	Matrix(int numRows , int numCols, bool isRandom);
     Matrix *transpose();
-    double generateRandNumber();
+    double generateRandomNumber();
     void setValue(int r , int c , double v);
     double getValue(int r , int c);
+    void printToConsole();
+    int getNumRows() {return this->numRows;}
+    int getNumCols(){return this->numCols;}
 private:
     int numRows;
     int numCols;

@@ -123,6 +123,33 @@ NeuralNets/fast:
 	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/build
 .PHONY : NeuralNets/fast
 
+src/Matrix.o: src/Matrix.cpp.o
+
+.PHONY : src/Matrix.o
+
+# target to build an object file
+src/Matrix.cpp.o:
+	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/Matrix.cpp.o
+.PHONY : src/Matrix.cpp.o
+
+src/Matrix.i: src/Matrix.cpp.i
+
+.PHONY : src/Matrix.i
+
+# target to preprocess a source file
+src/Matrix.cpp.i:
+	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/Matrix.cpp.i
+.PHONY : src/Matrix.cpp.i
+
+src/Matrix.s: src/Matrix.cpp.s
+
+.PHONY : src/Matrix.s
+
+# target to generate assembly for a file
+src/Matrix.cpp.s:
+	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/Matrix.cpp.s
+.PHONY : src/Matrix.cpp.s
+
 src/Neuron.o: src/Neuron.cpp.o
 
 .PHONY : src/Neuron.o
@@ -186,6 +213,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... NeuralNets"
+	@echo "... src/Matrix.o"
+	@echo "... src/Matrix.i"
+	@echo "... src/Matrix.s"
 	@echo "... src/Neuron.o"
 	@echo "... src/Neuron.i"
 	@echo "... src/Neuron.s"

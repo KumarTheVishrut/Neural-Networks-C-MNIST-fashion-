@@ -10,4 +10,6 @@ add_executable(
 	NeuralNets
 	src/main.cpp
 	src/Neuron.cpp
+	src/Matrix.cpp
+
 	)
