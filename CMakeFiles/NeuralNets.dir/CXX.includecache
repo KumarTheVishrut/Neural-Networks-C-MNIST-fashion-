@@ -16,17 +16,7 @@ vector
 random
 -
 
-/home/vishrutk/NeuralNets/include/Neuron.hpp
-iostream
--
-math.h
--
-
-/home/vishrutk/NeuralNets/src/main.cpp
-iostream
--
-../include/Neuron.hpp
-/home/vishrutk/NeuralNets/include/Neuron.hpp
+/home/vishrutk/NeuralNets/src/Matrix.cpp
 ../include/Matrix.hpp
 /home/vishrutk/NeuralNets/include/Matrix.hpp
 
