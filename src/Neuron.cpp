@@ -4,6 +4,9 @@ void Neuron::setVal(double val){
 	activate();
 	derive();
 }
+double Neuron::getVal() const {
+    return val;
+}
 // Constructor
 //
 Neuron::Neuron(double val) {
@@ -23,3 +26,6 @@ void Neuron::derive() {
 	this->der_val = this->acti_val * (1 - this->acti_val);
 	
 }
+
+
+

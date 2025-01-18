@@ -23,7 +23,7 @@ public:
 	void derive();
 
 	// getter
-	double getVal() {return this->val;}
+	double getVal() const;
 	double getActivatedVal() {return this->acti_val;}
 	double getDerivatedVal() {return this->der_val;}
 private:

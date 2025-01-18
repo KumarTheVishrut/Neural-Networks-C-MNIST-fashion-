@@ -13,17 +13,20 @@ class Matrix
 {
 public:
 	Matrix(int numRows , int numCols, bool isRandom);
+
     Matrix *transpose();
-    double generateRandomNumber();
-    void setValue(int r , int c , double v);
-    double getValue(int r , int c);
+    inline void setValue(int r, int c, double v) { this->values.at(r).at(c) = v; }
+    inline double getValue(int r , int c) const{return this->values.at(r).at(c); }
     void printToConsole();
     int getNumRows() {return this->numRows;}
     int getNumCols(){return this->numCols;}
 private:
     int numRows;
     int numCols;
-    vector <vector<double>> values;
+    //vector <vector<double>> values;
+    std::vector<std::vector<double>> values;
+    std::mt19937 gen; // Random number generator
+    double generateRandomNumber();
 
 
 

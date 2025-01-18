@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Neuron.hpp"
+#include "Matrix.hpp"
 #include <math.h>
 #include <vector>
 using namespace std;
@@ -12,9 +13,14 @@ class Layer
 
 {
 public:
-	Layer (int size);
-private:
 	int size;
+	Layer (int size);
+	void setVal(int i, double v);
+	Matrix *matrixifyVals();
+	Matrix *matrixifyActivatedVals();
+	Matrix *matrixifyDerivedVals();
+
+private:
 	// setters
 	vector <Neuron *> neurons;
 };
