@@ -1,4 +1,4 @@
-#indef __MATRIX__TO__VECTOR__HPP_
+#ifndef __MATRIX__TO__VECTOR__HPP_
 #define __MATRIX__TO__VECTOR__HPP_
 
 
@@ -28,3 +28,5 @@ namespace utils
 	};
 
 }
+
+#endif

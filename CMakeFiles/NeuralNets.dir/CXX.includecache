@@ -28,15 +28,41 @@ vector
 random
 -
 
+/home/vishrutk/NeuralNets/include/NeuralNetwork.hpp
+iostream
+-
+Neuron.hpp
+/home/vishrutk/NeuralNets/include/Neuron.hpp
+Matrix.hpp
+/home/vishrutk/NeuralNets/include/Matrix.hpp
+Layer.hpp
+/home/vishrutk/NeuralNets/include/Layer.hpp
+math.h
+-
+vector
+-
+utils/MultiplyMatrix.hpp
+/home/vishrutk/NeuralNets/include/utils/MultiplyMatrix.hpp
+
 /home/vishrutk/NeuralNets/include/Neuron.hpp
 iostream
 -
 math.h
 -
 
-/home/vishrutk/NeuralNets/src/Layer.cpp
-../include/Layer.hpp
-/home/vishrutk/NeuralNets/include/Layer.hpp
-../include/Matrix.hpp
+/home/vishrutk/NeuralNets/include/utils/MultiplyMatrix.hpp
+iostream
+-
+vector
+-
+assert.h
+-
+../Matrix.hpp
 /home/vishrutk/NeuralNets/include/Matrix.hpp
+
+/home/vishrutk/NeuralNets/src/NeuralNetwork.cpp
+../include/NeuralNetwork.hpp
+/home/vishrutk/NeuralNets/include/NeuralNetwork.hpp
+../include/utils/MultiplyMatrix.hpp
+/home/vishrutk/NeuralNets/include/utils/MultiplyMatrix.hpp
 

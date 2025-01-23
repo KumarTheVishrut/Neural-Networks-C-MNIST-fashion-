@@ -258,6 +258,33 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/utils/MultiplyMatrix.o: src/utils/MultiplyMatrix.cpp.o
+
+.PHONY : src/utils/MultiplyMatrix.o
+
+# target to build an object file
+src/utils/MultiplyMatrix.cpp.o:
+	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/utils/MultiplyMatrix.cpp.o
+.PHONY : src/utils/MultiplyMatrix.cpp.o
+
+src/utils/MultiplyMatrix.i: src/utils/MultiplyMatrix.cpp.i
+
+.PHONY : src/utils/MultiplyMatrix.i
+
+# target to preprocess a source file
+src/utils/MultiplyMatrix.cpp.i:
+	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/utils/MultiplyMatrix.cpp.i
+.PHONY : src/utils/MultiplyMatrix.cpp.i
+
+src/utils/MultiplyMatrix.s: src/utils/MultiplyMatrix.cpp.s
+
+.PHONY : src/utils/MultiplyMatrix.s
+
+# target to generate assembly for a file
+src/utils/MultiplyMatrix.cpp.s:
+	$(MAKE) -f CMakeFiles/NeuralNets.dir/build.make CMakeFiles/NeuralNets.dir/src/utils/MultiplyMatrix.cpp.s
+.PHONY : src/utils/MultiplyMatrix.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -282,6 +309,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/utils/MultiplyMatrix.o"
+	@echo "... src/utils/MultiplyMatrix.i"
+	@echo "... src/utils/MultiplyMatrix.s"
 .PHONY : help
 
 

@@ -14,6 +14,7 @@ CMakeFiles/NeuralNets.dir/src/NeuralNetwork.cpp.o
  /home/vishrutk/NeuralNets/include/Matrix.hpp
  /home/vishrutk/NeuralNets/include/NeuralNetwork.hpp
  /home/vishrutk/NeuralNets/include/Neuron.hpp
+ /home/vishrutk/NeuralNets/include/utils/MultiplyMatrix.hpp
  /home/vishrutk/NeuralNets/src/NeuralNetwork.cpp
 CMakeFiles/NeuralNets.dir/src/Neuron.cpp.o
  /home/vishrutk/NeuralNets/include/Neuron.hpp
@@ -23,4 +24,9 @@ CMakeFiles/NeuralNets.dir/src/main.cpp.o
  /home/vishrutk/NeuralNets/include/Matrix.hpp
  /home/vishrutk/NeuralNets/include/NeuralNetwork.hpp
  /home/vishrutk/NeuralNets/include/Neuron.hpp
+ /home/vishrutk/NeuralNets/include/utils/MultiplyMatrix.hpp
  /home/vishrutk/NeuralNets/src/main.cpp
+CMakeFiles/NeuralNets.dir/src/utils/MultiplyMatrix.cpp.o
+ /home/vishrutk/NeuralNets/include/Matrix.hpp
+ /home/vishrutk/NeuralNets/include/utils/MultiplyMatrix.hpp
+ /home/vishrutk/NeuralNets/src/utils/MultiplyMatrix.cpp

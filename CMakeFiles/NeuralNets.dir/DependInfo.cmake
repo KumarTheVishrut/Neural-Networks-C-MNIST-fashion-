@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/vishrutk/NeuralNets/src/NeuralNetwork.cpp" "/home/vishrutk/NeuralNets/CMakeFiles/NeuralNets.dir/src/NeuralNetwork.cpp.o"
   "/home/vishrutk/NeuralNets/src/Neuron.cpp" "/home/vishrutk/NeuralNets/CMakeFiles/NeuralNets.dir/src/Neuron.cpp.o"
   "/home/vishrutk/NeuralNets/src/main.cpp" "/home/vishrutk/NeuralNets/CMakeFiles/NeuralNets.dir/src/main.cpp.o"
+  "/home/vishrutk/NeuralNets/src/utils/MultiplyMatrix.cpp" "/home/vishrutk/NeuralNets/CMakeFiles/NeuralNets.dir/src/utils/MultiplyMatrix.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

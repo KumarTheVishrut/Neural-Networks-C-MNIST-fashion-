@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/NeuralNets.dir/src/NeuralNetwork.cpp.o"
   "CMakeFiles/NeuralNets.dir/src/Neuron.cpp.o"
   "CMakeFiles/NeuralNets.dir/src/main.cpp.o"
+  "CMakeFiles/NeuralNets.dir/src/utils/MultiplyMatrix.cpp.o"
   "NeuralNets"
   "NeuralNets.pdb"
 )
