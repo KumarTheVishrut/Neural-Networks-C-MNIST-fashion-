@@ -21,6 +21,7 @@ public:
     void setCurrentInput(vector<double> input);
     void printToConsole();
     void feedForward();
+    void setErrors();
 
     Matrix *getNeuronMatrix(int idx){ return this->layers.at(idx)->matrixifyVals();};
     Matrix *getActivatedNeuronMatrix(int idx){return this->layers.at(idx)->matrixifyActivatedVals();};
@@ -28,6 +29,11 @@ public:
     Matrix *getWeightMatrix(int idx){return this->weightMatrices.at(idx);};
 
     void setNeuronValue(int indexLayer, int indexNeuron, double val){this->layers[indexLayer]->setVal(indexNeuron,val);};
+    
+    // Error valuation
+    vector<double> getTotalErrors(){return this->errors;};
+    double getError(){return this->error; };
+    void setTarget(vector<double> target);
 
 
 private:
@@ -36,6 +42,10 @@ private:
     vector<Layer *> layers;
     vector<Matrix *> weightMatrices;
     vector <double> input;
+    double error;
+    vector <double> errors;
+    vector <double> historicalErrors;
+    vector<double> target;
 };
 
 #endif

@@ -19,6 +19,7 @@ public:
 	Matrix *matrixifyVals();
 	Matrix *matrixifyActivatedVals();
 	Matrix *matrixifyDerivedVals();
+	vector <Neuron *>getNeurons() { return this->neurons;};
 
 private:
 	// setters

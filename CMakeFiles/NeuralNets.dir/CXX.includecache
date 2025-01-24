@@ -60,13 +60,7 @@ assert.h
 ../Matrix.hpp
 /home/vishrutk/NeuralNets/include/Matrix.hpp
 
-/home/vishrutk/NeuralNets/src/main.cpp
-iostream
--
-../include/Neuron.hpp
-/home/vishrutk/NeuralNets/include/Neuron.hpp
-../include/Matrix.hpp
-/home/vishrutk/NeuralNets/include/Matrix.hpp
+/home/vishrutk/NeuralNets/src/NeuralNetwork.cpp
 ../include/NeuralNetwork.hpp
 /home/vishrutk/NeuralNets/include/NeuralNetwork.hpp
 ../include/utils/MultiplyMatrix.hpp

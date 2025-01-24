@@ -2,6 +2,47 @@
     #include "../include/utils/MultiplyMatrix.hpp"
 
 
+void::NeuralNetwork::setErrors(){
+    //variables - double error;
+    //vector <double> errors;
+    //vector <double> historicalErrors;
+    //methods
+    //vector<double> getTotalErrors(){return this->errors;};
+    //double getError(){return this->error; };  
+
+    int out_lay_idx = this->layers.size() -1;
+    Layer* outputLayer = this->layers.at(out_lay_idx);
+    int out_layer_size = outputLayer->getNeurons().size();
+
+    if (target.size() != out_layer_size) {
+        cerr << "Target-Output layer mismatch! "
+             << "Target size: " << target.size()
+             << ", Output size: " << out_layer_size << endl;
+        return; // Critical: Exit early to prevent crashes
+    }
+
+    errors.clear();
+    vector<Neuron*> out_neurons = outputLayer->getNeurons();
+    double tot_err = 0.0;
+    for (int i =0 ; i < out_layer_size; i++){
+        double pred = out_neurons.at(i)->getActivatedVal();
+        double err = pow(target.at(i) - pred,2);
+        errors.push_back(err);
+        tot_err += err; 
+}
+    tot_err /= out_lay_idx;
+    //this->errors = tot_err;
+    historicalErrors.push_back(tot_err); 
+}
+
+void::NeuralNetwork::setTarget(vector<double> target){
+    this->target = target ;
+
+}
+
+
+
+
 void NeuralNetwork::feedForward() {
     // Iterate only for the number of weight matrices (layers.size() - 1)
     for (int i = 0; i < layers.size() - 1; i++) {  // FIXED: Stop at layers.size() - 1
@@ -44,7 +85,7 @@ void NeuralNetwork::feedForward() {
             cout << "===========================" << endl;
 
             if(i < this->layers.size()-1){
-                cout << "Weignt Matrix" << i << endl;
+                cout << "Weight Matrix" << i << endl;
                 this->getWeightMatrix(i)->printToConsole();
             }
             cout << "===========================" << endl;
