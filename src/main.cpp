@@ -42,13 +42,33 @@ int main(int argc, char **argv) {
     topology.push_back(3);  // Output layer: 1 neuron
 
     NeuralNetwork *nn = new NeuralNetwork(topology);
-    nn->setCurrentInput(input);
-    nn->feedForward();
-    nn->setTarget(input);
-    nn->setErrors();
-    nn->printToConsole();
-    cout << "Net total error" << nn->getTotalErrors() << endl;
+    int epochs = 5;
 
+    // Training loop
+    for (int epoch = 0; epoch < epochs; epoch++) {
+        cout << "Epoch " << epoch + 1 << ":" << endl;
+
+        // Set the current input and target
+        nn->setCurrentInput(input);
+        nn->setTarget(input);
+
+        // Perform forward propagation
+        nn->feedForward();
+
+        // Calculate errors
+        nn->setErrors();
+
+        // Perform backpropagation
+        nn->backPropagation();
+
+        // Get and print the total error for this epoch
+        vector<double> totalErrors = nn->getTotalErrors();
+        cout << "Total Error: ";
+        for (double err : totalErrors) {
+            cout << err << " ";
+        }
+        cout << endl << "-------------------------" << endl;
+    }
     delete nn;  // Cleanup (ensure destructor is properly implemented)
     return 0;
 }

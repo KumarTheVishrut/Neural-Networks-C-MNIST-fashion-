@@ -7,6 +7,7 @@
 #include "Matrix.hpp"
 #include "Layer.hpp"
 #include <math.h>
+#include <algorithm>
 #include <vector>
 #include "utils/MultiplyMatrix.hpp"
 
@@ -22,6 +23,7 @@ public:
     void printToConsole();
     void feedForward();
     void setErrors();
+    void backPropagation();
 
     Matrix *getNeuronMatrix(int idx){ return this->layers.at(idx)->matrixifyVals();};
     Matrix *getActivatedNeuronMatrix(int idx){return this->layers.at(idx)->matrixifyActivatedVals();};
@@ -46,6 +48,7 @@ private:
     vector <double> errors;
     vector <double> historicalErrors;
     vector<double> target;
+    double learningRate;
 };
 
 #endif

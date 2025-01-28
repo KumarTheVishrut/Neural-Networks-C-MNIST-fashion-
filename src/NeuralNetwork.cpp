@@ -1,6 +1,81 @@
     #include "../include/NeuralNetwork.hpp"
     #include "../include/utils/MultiplyMatrix.hpp"
 
+void NeuralNetwork::backPropagation() {
+    vector<Matrix*> newWeights;
+    double learningRate = this->learningRate; // Ensure learningRate is a member variable
+
+    int outputLayerIdx = layers.size() - 1;
+    Layer *outputLayer = layers.at(outputLayerIdx);
+    Matrix *derivedOutput = outputLayer->matrixifyDerivedVals();
+    Matrix *gradient = new Matrix(1, outputLayer->getNeurons().size(), false);
+    for (int i = 0; i < errors.size(); i++) {
+        gradient->setValue(0, i, derivedOutput->getValue(0, i) * errors.at(i));
+    }
+
+    // Process each weight matrix in reverse order
+    for (int w_idx = weightMatrices.size() - 1; w_idx >= 0; w_idx--) {
+        Layer *currentLayer = layers.at(w_idx + 1); // Layer after the weight matrix
+        Layer *prevLayer = layers.at(w_idx); // Layer before the weight matrix
+
+        // Compute delta for the current weight matrix
+        Matrix *activatedPrev = prevLayer->matrixifyActivatedVals();
+        Matrix *deltaWeights = (new utils::MultiplyMatrix(gradient->transpose(), activatedPrev))->execute()->transpose();
+
+        // Update weights with learning rate
+        Matrix *currentWeights = weightMatrices.at(w_idx);
+        Matrix *newWeightMatrix = new Matrix(currentWeights->getNumRows(), currentWeights->getNumCols(), false);
+        for (int r = 0; r < newWeightMatrix->getNumRows(); r++) {
+            for (int c = 0; c < newWeightMatrix->getNumCols(); c++) {
+                double original = currentWeights->getValue(r, c);
+                double delta = deltaWeights->getValue(r, c);
+                newWeightMatrix->setValue(r, c, original - learningRate * delta);
+            }
+        }
+        newWeights.push_back(newWeightMatrix);
+
+        // Compute gradient for previous layer if not the first weight matrix
+        if (w_idx > 0) {
+            Matrix *weightsT = currentWeights->transpose();
+            Matrix *gradientPrevUntrained = (new utils::MultiplyMatrix(gradient, weightsT))->execute();
+            Matrix *derivedPrev = prevLayer->matrixifyDerivedVals();
+            Matrix *gradientPrev = new Matrix(gradientPrevUntrained->getNumRows(), gradientPrevUntrained->getNumCols(), false);
+            for (int r = 0; r < gradientPrev->getNumRows(); r++) {
+                for (int c = 0; c < gradientPrev->getNumCols(); c++) {
+                    gradientPrev->setValue(r, c, gradientPrevUntrained->getValue(r, c) * derivedPrev->getValue(r, c));
+                }
+            }
+            // Update gradient for next iteration
+            delete gradient;
+            gradient = gradientPrev;
+
+            // Cleanup temporary matrices
+            delete weightsT;
+            delete gradientPrevUntrained;
+            delete derivedPrev;
+        }
+
+        // Cleanup
+        delete activatedPrev;
+        delete deltaWeights;
+    }
+
+    // Reverse newWeights to match original weight matrix order
+    reverse(newWeights.begin(), newWeights.end());
+
+    // Replace old weights with new weights
+    for (Matrix *w : this->weightMatrices) {
+        delete w;
+    }
+    this->weightMatrices.clear();
+    for (Matrix *w : newWeights) {
+        this->weightMatrices.push_back(w);
+    }
+
+    // Cleanup remaining matrices
+    delete gradient;
+    delete derivedOutput;
+}
 
 void::NeuralNetwork::setErrors(){
     //variables - double error;
