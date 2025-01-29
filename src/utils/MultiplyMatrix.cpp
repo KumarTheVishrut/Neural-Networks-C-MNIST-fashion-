@@ -24,7 +24,7 @@ namespace utils {
 
         // Initialize result matrix
         this->c = new Matrix(a->getNumRows(), b->getNumCols(), false);
-        std::cout << "Matrix initialized successfully!" << std::endl;
+        //std::cout << "Matrix initialized successfully!" << std::endl;
     }
 
 Matrix* MultiplyMatrix::execute() {
@@ -33,8 +33,8 @@ Matrix* MultiplyMatrix::execute() {
         return nullptr;
     }
 
-    std::cout << "Matrix A Size: " << a->getNumRows() << "x" << a->getNumCols() << std::endl;
-    std::cout << "Matrix B Size: " << b->getNumRows() << "x" << b->getNumCols() << std::endl;
+    //std::cout << "Matrix A Size: " << a->getNumRows() << "x" << a->getNumCols() << std::endl;
+    //std::cout << "Matrix B Size: " << b->getNumRows() << "x" << b->getNumCols() << std::endl;
 
     for (int i = 0; i < a->getNumRows(); ++i) {
         for (int j = 0; j < b->getNumCols(); ++j) {

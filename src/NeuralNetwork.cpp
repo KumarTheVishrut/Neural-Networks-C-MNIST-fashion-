@@ -77,14 +77,35 @@ void NeuralNetwork::backPropagation() {
     delete derivedOutput;
 }
 
-void::NeuralNetwork::setErrors(){
-    //variables - double error;
-    //vector <double> errors;
-    //vector <double> historicalErrors;
-    //methods
-    //vector<double> getTotalErrors(){return this->errors;};
-    //double getError(){return this->error; };  
+void NeuralNetwork::printInputToConsole() {
+    for (int i = 0; i < this->target.size(); i++){
+    cout << this->target.at(i) << "\t";
 
+    } 
+    cout << endl;
+
+}
+
+
+void NeuralNetwork::printTargetToConsole() {
+  for (int i = 0; i < this->target.size(); i++)
+  {
+    cout << this->target.at(i) << "\t";
+
+  }
+  cout << endl;
+}
+
+void NeuralNetwork::printOutPutToConsole(){
+  int idx_out_layer = this->layers.size() - 1;
+  Matrix *outputVals = this->layers.at(idx_out_layer)->matrixifyActivatedVals();
+  for (int c = 0 ; c < outputVals->getNumCols(); c++){
+    cout << outputVals->getValue(0,c)<<"\t";
+  }
+  cout << endl;
+}
+
+void::NeuralNetwork::setErrors(){
     int out_lay_idx = this->layers.size() -1;
     Layer* outputLayer = this->layers.at(out_lay_idx);
     int out_layer_size = outputLayer->getNeurons().size();
@@ -106,7 +127,7 @@ void::NeuralNetwork::setErrors(){
         tot_err += err; 
 }
     tot_err /= out_lay_idx;
-    //this->errors = tot_err;
+    this->error = tot_err;
     historicalErrors.push_back(tot_err); 
 }
 

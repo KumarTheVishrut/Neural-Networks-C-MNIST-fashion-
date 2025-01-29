@@ -34,41 +34,38 @@ std::ostream& operator<<(std::ostream& os, const std::vector<double>& vec) {
     //delete m;
     //delete mT;
 int main(int argc, char **argv) {
-    vector<double> input = {1, 0, 1};  // Input for Layer 0
-    vector<double> target = {0.5};
-    vector<int> topology;
-    topology.push_back(3);  // Input layer: 3 neurons
-    topology.push_back(2);  // Hidden layer: 2 neurons
-    topology.push_back(3);  // Output layer: 1 neuron
-
+    // Network topology: 3 input, 2 hidden, 3 output neurons
+    vector<int> topology = {3, 2, 3};
+    
+    // Training data
+    vector<double> input = {1, 0, 1};
+    vector<double> target = {0.5, 0.5, 0.5};  // Matches output layer size
+    
     NeuralNetwork *nn = new NeuralNetwork(topology);
-    int epochs = 5;
+    int epochs = 100;
+    double learningRate = 0.1;  // Should be set in NeuralNetwork class
+    // Forward pass
+    nn->setCurrentInput(input);
+    nn->setTarget(target);
 
+    
     // Training loop
     for (int epoch = 0; epoch < epochs; epoch++) {
-        cout << "Epoch " << epoch + 1 << ":" << endl;
-
-        // Set the current input and target
-        nn->setCurrentInput(input);
-        nn->setTarget(input);
-
-        // Perform forward propagation
+        cout << "EPOCH"<< epoch << endl;
+        // Set target and calculate errors
         nn->feedForward();
-
-        // Calculate errors
         nn->setErrors();
+        cout << "ERROR"<< nn->getError() << endl;
 
-        // Perform backpropagation
+        // Backward pass
         nn->backPropagation();
-
-        // Get and print the total error for this epoch
-        vector<double> totalErrors = nn->getTotalErrors();
-        cout << "Total Error: ";
-        for (double err : totalErrors) {
-            cout << err << " ";
-        }
-        cout << endl << "-------------------------" << endl;
+        
+        cout << "\n-------------------------" << endl;
+        cout << "OUTPUT" << endl;
+        nn->printOutPutToConsole();
+        // Progress reporting
     }
-    delete nn;  // Cleanup (ensure destructor is properly implemented)
+
+    delete nn;  // Cleanup after loop
     return 0;
 }

@@ -36,7 +36,9 @@ public:
     vector<double> getTotalErrors(){return this->errors;};
     double getError(){return this->error; };
     void setTarget(vector<double> target);
-
+     void printInputToConsole();
+     void printOutPutToConsole();
+     void printTargetToConsole();
 
 private:
     int     topologySize; 
