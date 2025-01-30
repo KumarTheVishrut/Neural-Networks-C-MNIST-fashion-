@@ -1,3 +1,21 @@
-build/test_images
-build/train_images
-venv
+# Ignore the virtual environment
+venv/
+
+# Ignore all files in the build directory
+build/
+
+# Ignore system-specific files
+*.DS_Store
+
+# Ignore compiled files and temporary files
+*.pyc
+*.pyo
+*.log
+__pycache__/
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore kaggle.json (contains sensitive API keys)
+kaggle.json
