@@ -1,5 +1,9 @@
 #include "../include/Matrix.hpp"
 
+// Deconstructor added
+
+
+
 Matrix *Matrix::transpose(){
     Matrix *m = new Matrix(this->numCols,this->numRows,false);
     for (int i = 0; i < numRows; i++) {

@@ -1,6 +1,9 @@
 #include "../include/Layer.hpp"
 #include "../include/Matrix.hpp"
 
+
+
+
 Matrix *Layer::matrixifyVals(){
 	Matrix *m = new Matrix(1, this->neurons.size(),false);
 	for (int i = 0 ; i< neurons.size(); i++){

@@ -18,6 +18,7 @@ namespace utils{
 	{
 	public:
 		MultiplyMatrix(Matrix *a , Matrix *b);
+		//virtual ~MultiplyMatrix();
 		Matrix *execute();
 		
 	private:

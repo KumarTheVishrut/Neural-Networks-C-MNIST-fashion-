@@ -50,7 +50,9 @@ private:
     vector <double> errors;
     vector <double> historicalErrors;
     vector<double> target;
-    double learningRate;
+    double learningRate = 0.1;
+     double momentum = 0.9;
+    vector<Matrix*> previousDeltas;
 };
 
 #endif

@@ -10,8 +10,10 @@ void NeuralNetwork::backPropagation() {
     Matrix *derivedOutput = outputLayer->matrixifyDerivedVals();
     Matrix *gradient = new Matrix(1, outputLayer->getNeurons().size(), false);
     for (int i = 0; i < errors.size(); i++) {
-        gradient->setValue(0, i, derivedOutput->getValue(0, i) * errors.at(i));
-    }
+    double derivedVal = derivedOutput->getValue(0, i);
+    double error = errors.at(i);
+    gradient->setValue(0, i, derivedVal * error);
+}
 
     // Process each weight matrix in reverse order
     for (int w_idx = weightMatrices.size() - 1; w_idx >= 0; w_idx--) {
@@ -93,6 +95,7 @@ void NeuralNetwork::printTargetToConsole() {
     cout << this->target.at(i) << "\t";
 
   }
+  
   cout << endl;
 }
 
@@ -122,7 +125,7 @@ void::NeuralNetwork::setErrors(){
     double tot_err = 0.0;
     for (int i =0 ; i < out_layer_size; i++){
         double pred = out_neurons.at(i)->getActivatedVal();
-        double err = pow(target.at(i) - pred,2);
+        double err = target.at(i) - pred;
         errors.push_back(err);
         tot_err += err; 
 }
@@ -213,7 +216,7 @@ NeuralNetwork::NeuralNetwork(vector<int> topology) {
     }
 }
 
-
+//Deconstructor
     NeuralNetwork::~NeuralNetwork() {
         for (auto layer : layers) {
             delete layer;

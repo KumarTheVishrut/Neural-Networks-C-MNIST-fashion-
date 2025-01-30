@@ -3,7 +3,7 @@
 #include <cassert>
 
 namespace utils {
-    MultiplyMatrix::MultiplyMatrix(Matrix* a, Matrix* b) {
+    MultiplyMatrix::MultiplyMatrix(Matrix* a, Matrix* b)  {
         // Check for null pointers and log the error instead of asserting
         if (!a || !b) {
             std::cerr << "Error: Null matrix pointer passed!" << std::endl;
@@ -24,28 +24,25 @@ namespace utils {
 
         // Initialize result matrix
         this->c = new Matrix(a->getNumRows(), b->getNumCols(), false);
-        //std::cout << "Matrix initialized successfully!" << std::endl;
     }
 
-Matrix* MultiplyMatrix::execute() {
-    if (!this->a || !this->b) {
-        std::cerr << "Error: Matrix multiplication cannot proceed due to invalid matrices!" << std::endl;
-        return nullptr;
-    }
 
-    //std::cout << "Matrix A Size: " << a->getNumRows() << "x" << a->getNumCols() << std::endl;
-    //std::cout << "Matrix B Size: " << b->getNumRows() << "x" << b->getNumCols() << std::endl;
 
-    for (int i = 0; i < a->getNumRows(); ++i) {
-        for (int j = 0; j < b->getNumCols(); ++j) {
-            double sum = 0;
-            for (int k = 0; k < a->getNumCols(); ++k) {
-                sum += this->a->getValue(i, k) * this->b->getValue(k, j);
-            }
-            this->c->setValue(i, j, sum);
+    Matrix* MultiplyMatrix::execute() {
+        if (!this->a || !this->b) {
+            std::cerr << "Error: Matrix multiplication cannot proceed due to invalid matrices!" << std::endl;
+            return nullptr;
         }
-    }
 
-    return this->c;
-}
-}
+        for (int i = 0; i < a->getNumRows(); ++i) {
+            for (int j = 0; j < b->getNumCols(); ++j) {
+                double sum = 0;
+                for (int k = 0; k < a->getNumCols(); ++k) {
+                    sum += this->a->getValue(i, k) * this->b->getValue(k, j);
+                }
+                this->c->setValue(i, j, sum);
+            }
+        }
+        return this->c;
+    }
+} // namespace utils
