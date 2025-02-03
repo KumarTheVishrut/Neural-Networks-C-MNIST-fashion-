@@ -225,3 +225,30 @@ NeuralNetwork::NeuralNetwork(vector<int> topology) {
             delete matrix;
         }
     }
+
+// Get network output
+std::vector<double> NeuralNetwork::getOutput() const {
+    if (layers.empty()) {
+        throw std::runtime_error("No output layer");
+    }
+    return layers.back()->getOutputValues();
+}
+
+// Update weights across all layers
+void NeuralNetwork::updateWeights(double learningRate) {
+    for (auto& layer : layers) {
+        layer->updateWeights(learningRate);
+    }
+}
+
+// Save weights to file
+void NeuralNetwork::saveWeights(const std::string& filepath) const {
+    std::ofstream file(filepath);
+    if (!file) {
+        throw std::runtime_error("Failed to open weights file");
+    }
+    
+    for (const auto& layer : layers) {
+        layer->saveWeights(file);
+    }
+}

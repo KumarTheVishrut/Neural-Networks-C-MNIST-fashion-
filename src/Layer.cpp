@@ -1,5 +1,7 @@
 #include "../include/Layer.hpp"
 #include "../include/Matrix.hpp"
+#include "../include/NeuralNetwork.hpp"
+
 
 
 
@@ -47,5 +49,32 @@ Layer::Layer(int size){
 void Layer::setVal(int index, double value) {
     if (index < neurons.size()) {
         neurons[index]->setVal(value);  // Assuming Neuron has a setVal method
+    }
+}
+
+
+// Get the output values of the layer
+std::vector<double> Layer::getOutput() const {
+    std::vector<double> output;
+    for (const auto& neuron : neurons) {
+        output.push_back(neuron->getActivatedVal());
+    }
+    return output;
+}
+
+// Update weights using gradient descent
+void Layer::updateWeights(double learningRate) {
+    for (auto& neuron : neurons) {
+        neuron->updateWeights(learningRate);
+    }
+}
+
+// Save weights to a file
+void Layer::saveWeights(std::ofstream& file) const {
+    for (const auto& neuron : neurons) {
+        for (double weight : neuron->getWeights()) {
+            file << std::fixed << std::setprecision(15) << weight << " ";
+        }
+        file << "\n";
     }
 }

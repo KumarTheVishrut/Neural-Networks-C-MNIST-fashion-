@@ -5,147 +5,184 @@
 #include <random>
 #include <algorithm>
 #include <chrono>
+#include <memory>
 #include "../include/Neuron.hpp"
 #include "../include/Matrix.hpp"
 #include "../include/NeuralNetwork.hpp"
 #include "../include/utils/MultiplyMatrix.hpp"
 #include "../include/utils/ImageProcessor.hpp"
 
+// Namespace aliases
 namespace fs = std::filesystem;
+namespace chrono = std::chrono;
 using namespace std;
 
-// Operator overload for vector printing
-std::ostream& operator<<(std::ostream& os, const std::vector<double>& vec) {
-    os << "[ ";
-    for (size_t i = 0; i < vec.size(); i++) {
-        os << vec[i];
-        if (i < vec.size() - 1) os << ", ";
-    }
-    os << " ]";
-    return os;
-}
+// Forward declarations
+struct TrainingSample;
+vector<TrainingSample> loadDataset(const string& dir);
+void shuffleDataset(vector<TrainingSample>& dataset);
+void trainModel(NeuralNetwork& nn, const vector<TrainingSample>& trainData, 
+               const vector<TrainingSample>& testData, int epochs, 
+               double learningRate, int batchSize);
+double calculateAccuracy(const NeuralNetwork& nn, 
+                        const vector<TrainingSample>& dataset);
 
-// Structure to hold training samples
+// Training sample structure
 struct TrainingSample {
     vector<double> pixels;
-    vector<double> label; // One-hot encoded
+    vector<double> label;
 };
 
-// Function to load dataset from directory
-vector<TrainingSample> loadDataset(const string& dir) {
-    vector<TrainingSample> dataset;
-    for (int classIdx = 0; classIdx < 10; ++classIdx) {
-        string classDir = dir + "/" + to_string(classIdx);
-        for (const auto& entry : fs::directory_iterator(classDir)) {
-            vector<double> pixels = ImageProcessor::process(entry.path());
-            vector<double> label(10, 0);
-            label[classIdx] = 1;
-            dataset.push_back({pixels, label});
-        }
-    }
-    return dataset;
-}
-
-// Function to shuffle dataset
-void shuffleDataset(vector<TrainingSample>& dataset) {
-    auto rng = default_random_engine {};
-    shuffle(begin(dataset), end(dataset), rng);
-}
-
-int main(int argc, char **argv) {
-    // Check for correct arguments
+int main(int argc, char** argv) {
+    // Argument validation
     if (argc < 3) {
-        cerr << "Usage: " << argv[0] << " <train_dir> <test_dir> [epochs] [learning_rate]" << endl;
+        cerr << "Usage: " << argv[0] 
+             << " <train_dir> <test_dir> [epochs=10] [learning_rate=0.01]\n";
         return 1;
     }
 
-    // Network topology for Fashion MNIST
-    vector<int> topology = {784, 128, 64, 10};
+    try {
+        // Configuration
+        const vector<int> topology = {784, 128, 64, 10};
+        const int epochs = (argc > 3) ? stoi(argv[3]) : 10;
+        const double learningRate = (argc > 4) ? stod(argv[4]) : 0.01;
+        const int batchSize = 64;
+
+        // Load data
+        cout << "Loading training data...\n";
+        auto trainData = loadDataset(argv[1]);
+        cout << "Loading test data...\n";
+        auto testData = loadDataset(argv[2]);
+
+        // Initialize network
+        unique_ptr<NeuralNetwork> nn = make_unique<NeuralNetwork>(topology);
+        
+        // Training process
+        trainModel(*nn, trainData, testData, epochs, learningRate, batchSize);
+
+        // Save results
+        cout << "\nSaving model weights...\n";
+        nn->saveWeights("model_weights.bin");
+
+    } catch (const exception& e) {
+        cerr << "\nError: " << e.what() << endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+// Function implementations
+vector<TrainingSample> loadDataset(const string& dir) {
+    vector<TrainingSample> dataset;
     
-    // Training parameters
-    int epochs = (argc > 3) ? stoi(argv[3]) : 10;
-    double learningRate = (argc > 4) ? stod(argv[4]) : 0.01;
-    int batchSize = 64;
+    for (int classIdx = 0; classIdx < 10; ++classIdx) {
+        const string classDir = dir + "/" + to_string(classIdx);
+        
+        for (const auto& entry : fs::directory_iterator(classDir)) {
+            const auto pixels = ImageProcessor::process(entry.path().string());
+            vector<double> label(10, 0);
+            label[classIdx] = 1;
+            
+            dataset.push_back({pixels, label});
+        }
+    }
+    
+    return dataset;
+}
 
-    // Load datasets
-    cout << "Loading training data..." << endl;
-    auto trainData = loadDataset(argv[1]);
-    cout << "Loading test data..." << endl;
-    auto testData = loadDataset(argv[2]);
+void shuffleDataset(vector<TrainingSample>& dataset) {
+    static random_device rd;
+    static mt19937 rng(rd());
+    shuffle(dataset.begin(), dataset.end(), rng);
+}
 
-    // Create neural network
-    NeuralNetwork *nn = new NeuralNetwork(topology);
+void trainModel(NeuralNetwork& nn, const vector<TrainingSample>& trainData,
+               const vector<TrainingSample>& testData, int epochs,
+               double learningRate, int batchSize) {
+    auto trainDataCopy = trainData;  // Create modifiable copy
+    const auto startTime = chrono::high_resolution_clock::now();
 
-    // Training loop
-    cout << "Starting training..." << endl;
-    auto startTime = chrono::high_resolution_clock::now();
-
-    for (int epoch = 0; epoch < epochs; epoch++) {
+    for (int epoch = 0; epoch < epochs; ++epoch) {
         cout << "\nEpoch " << epoch + 1 << "/" << epochs << endl;
         
-        shuffleDataset(trainData);
+        shuffleDataset(trainDataCopy);
         double epochLoss = 0;
-        int correctPredictions = 0;
+        int correctCount = 0;
 
-        // Mini-batch training
-        for (size_t i = 0; i < trainData.size(); i += batchSize) {
+        // Batch processing
+        for (size_t i = 0; i < trainDataCopy.size(); i += batchSize) {
+            const size_t endIdx = min(i + batchSize, trainDataCopy.size());
+            const size_t actualBatchSize = endIdx - i;
+
             double batchLoss = 0;
             int batchCorrect = 0;
 
-            for (size_t j = 0; j < batchSize && (i + j) < trainData.size(); j++) {
-                const auto& sample = trainData[i + j];
+            // Process batch
+            for (size_t j = i; j < endIdx; ++j) {
+                const auto& sample = trainDataCopy[j];
                 
-                // Forward pass
-                nn->setCurrentInput(sample.pixels);
-                nn->setTarget(sample.label);
-                nn->feedForward();
+                nn.setCurrentInput(sample.pixels);
+                nn.setTarget(sample.label);
                 
-                // Calculate loss and accuracy
-                batchLoss += nn->getError();
-                auto output = nn->getOutput();
-                int predicted = distance(output.begin(), max_element(output.begin(), output.end()));
-                int actual = distance(sample.label.begin(), max_element(sample.label.begin(), sample.label.end()));
+                // Forward + backward pass
+                nn.feedForward();
+                batchLoss += nn.getError();
+                
+                // Calculate accuracy
+                const auto output = nn.getOutput();
+                const int predicted = distance(output.begin(), 
+                                             max_element(output.begin(), output.end()));
+                const int actual = distance(sample.label.begin(), 
+                                          max_element(sample.label.begin(), sample.label.end()));
+                
                 if (predicted == actual) batchCorrect++;
                 
-                // Backward pass
-                nn->backPropagation();
+                nn.backPropagation();
             }
 
             // Update weights
-            nn->updateWeights(learningRate / batchSize);
+            nn.updateWeights(learningRate / actualBatchSize);
             
-            epochLoss += batchLoss / batchSize;
-            correctPredictions += batchCorrect;
+            epochLoss += batchLoss / actualBatchSize;
+            correctCount += batchCorrect;
         }
 
-        // Calculate epoch statistics
-        double accuracy = static_cast<double>(correctPredictions) / trainData.size();
-        cout << "Loss: " << epochLoss / (trainData.size() / batchSize)
-             << "  Accuracy: " << accuracy * 100 << "%" << endl;
+        // Epoch statistics
+        const double accuracy = static_cast<double>(correctCount) / trainDataCopy.size();
+        cout << "Loss: " << epochLoss / (trainDataCopy.size()/batchSize)
+             << "  Accuracy: " << accuracy * 100 << "%";
 
-        // Test set evaluation
-        if (epoch % 5 == 0) {
-            int testCorrect = 0;
-            for (const auto& sample : testData) {
-                nn->setCurrentInput(sample.pixels);
-                nn->feedForward();
-                auto output = nn->getOutput();
-                int predicted = distance(output.begin(), max_element(output.begin(), output.end()));
-                int actual = distance(sample.label.begin(), max_element(sample.label.begin(), sample.label.end()));
-                if (predicted == actual) testCorrect++;
-            }
-            cout << "Test Accuracy: " << (static_cast<double>(testCorrect) / testData.size()) * 100 << "%" << endl;
+        // Validation
+        if (epoch % 2 == 0) {
+            const double testAcc = calculateAccuracy(nn, testData);
+            cout << "  Validation Accuracy: " << testAcc * 100 << "%";
         }
     }
 
-    auto endTime = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::minutes>(endTime - startTime);
-    cout << "\nTraining completed in " << duration.count() << " minutes" << endl;
+    // Training duration
+    const auto duration = chrono::duration_cast<chrono::minutes>(
+        chrono::high_resolution_clock::now() - startTime
+    );
+    cout << "\n\nTraining completed in " << duration.count() << " minutes\n";
+}
 
-    // Save model weights
-    cout << "Saving model weights..." << endl;
-    nn->saveWeights("model_weights.bin");
-
-    delete nn;
-    return 0;
+double calculateAccuracy(const NeuralNetwork& nn, 
+                        const vector<TrainingSample>& dataset) {
+    int correct = 0;
+    
+    for (const auto& sample : dataset) {
+        nn.setCurrentInput(sample.pixels);
+        nn.feedForward();
+        
+        const auto output = nn.getOutput();
+        const int predicted = distance(output.begin(), 
+                                     max_element(output.begin(), output.end()));
+        const int actual = distance(sample.label.begin(), 
+                                  max_element(sample.label.begin(), sample.label.end()));
+        
+        if (predicted == actual) correct++;
+    }
+    
+    return static_cast<double>(correct) / dataset.size();
 }

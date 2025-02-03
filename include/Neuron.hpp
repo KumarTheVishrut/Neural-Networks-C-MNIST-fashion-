@@ -26,6 +26,9 @@ public:
 	double getVal() const;
 	double getActivatedVal() {return this->acti_val;}
 	double getDerivatedVal() {return this->der_val;}
+
+	void updateWeights(double learningRate);
+    const std::vector<double>& getWeights() const;
 private:
 	// setters
 	double val;

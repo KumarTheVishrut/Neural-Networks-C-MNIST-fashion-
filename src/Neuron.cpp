@@ -1,4 +1,9 @@
 #include "../include/Neuron.hpp"
+
+
+
+
+
 void Neuron::setVal(double val){
 	this->val = val;
 	activate();
@@ -27,5 +32,14 @@ void Neuron::derive() {
 	
 }
 
+void Neuron::updateWeights(double learningRate) {
+    for (size_t i = 0; i < weights.size(); i++) {
+        weights[i] -= learningRate * deltaWeights[i];
+    }
+}
+
+const std::vector<double>& Neuron::getWeights() const {
+    return weights;
+}
 
 

@@ -3,7 +3,9 @@
 
 CMakeFiles/NeuralNets.dir/src/Layer.cpp.o: include/Layer.hpp
 CMakeFiles/NeuralNets.dir/src/Layer.cpp.o: include/Matrix.hpp
+CMakeFiles/NeuralNets.dir/src/Layer.cpp.o: include/NeuralNetwork.hpp
 CMakeFiles/NeuralNets.dir/src/Layer.cpp.o: include/Neuron.hpp
+CMakeFiles/NeuralNets.dir/src/Layer.cpp.o: include/utils/MultiplyMatrix.hpp
 CMakeFiles/NeuralNets.dir/src/Layer.cpp.o: src/Layer.cpp
 
 CMakeFiles/NeuralNets.dir/src/Matrix.cpp.o: include/Matrix.hpp
@@ -23,6 +25,7 @@ CMakeFiles/NeuralNets.dir/src/main.cpp.o: include/Layer.hpp
 CMakeFiles/NeuralNets.dir/src/main.cpp.o: include/Matrix.hpp
 CMakeFiles/NeuralNets.dir/src/main.cpp.o: include/NeuralNetwork.hpp
 CMakeFiles/NeuralNets.dir/src/main.cpp.o: include/Neuron.hpp
+CMakeFiles/NeuralNets.dir/src/main.cpp.o: include/utils/ImageProcessor.hpp
 CMakeFiles/NeuralNets.dir/src/main.cpp.o: include/utils/MultiplyMatrix.hpp
 CMakeFiles/NeuralNets.dir/src/main.cpp.o: src/main.cpp
 
